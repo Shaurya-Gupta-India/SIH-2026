@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1E2229">
+<meta name="description" content="MAGANAI — MOIL mining intelligence for exploration, production planning and operational decisions.">
+<title>MAGANAI — MOIL Mining Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-mark"><span></span><span></span><span></span></div>
+    <div><b>MAGANAI</b><small>MAGANAI / 2026</small></div>
+  </div>
+  <div class="side-label">INTELLIGENCE</div>
+  <nav class="primary-nav" id="nav">
+    <button class="nav active" data-page="overview"><span class="nav-no">01</span><span class="nav-icon">⌂</span><span>Home</span></button>
+    <button class="nav" data-page="exploration"><span class="nav-no">02</span><span class="nav-icon">⌁</span><span>Exploration</span></button>
+    <button class="nav" data-page="production"><span class="nav-no">03</span><span class="nav-icon">▥</span><span>Production</span></button>
+    <button class="nav" data-page="equipment"><span class="nav-no">04</span><span class="nav-icon">⚙</span><span>Equipment</span></button>
+    <button class="nav" data-page="decisions"><span class="nav-no">05</span><span class="nav-icon">◆</span><span>Decisions</span></button>
+    <button class="nav" data-page="copilot"><span class="nav-no">06</span><span class="nav-icon">✦</span><span>Copilot</span></button>
+  </nav>
+  <div class="side-label system-label">ANALYTICS</div>
+  <nav>
+    <button class="nav" data-page="analytics"><span class="nav-no">07</span><span class="nav-icon">⌗</span><span>History</span></button>
+    <button class="nav" data-page="models"><span class="nav-no">08</span><span class="nav-icon">◈</span><span>How it works</span></button>
+  </nav>
+  <div class="side-bottom">
+    <div class="system-card"><i></i><div><b>MOIL INTELLIGENCE</b><small>Connected analytics workspace</small></div></div>
+    <div class="side-foot">SPACE · GEOLOGY · OPERATIONS</div>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="mobile-brand"><b>MAGANAI</b><small>MAGANAI</small></div>
+  <div class="topbar-left">
+    <div class="mine-picker"><span>MINE</span><select id="mineSelect"></select></div>
+    <div class="context-pill"><i></i> 10 MINE LOCATIONS</div>
+  </div>
+  <div class="topbar-right">
+    <label class="search"><span>⌕</span><input id="globalSearch" placeholder="Search a mine or topic…"></label>
+    <span class="live"><i></i> SYSTEM READY</span>
+    <span class="clock">12 SEP 2026 · 14:32 IST</span>
+    <button class="mobile-menu" id="mobileMenu">☰</button>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- COMMAND CENTER -->
+<section class="page active" id="page-overview">
+  <div class="page-kicker">MOIL MINING INTELLIGENCE / COMMAND CENTER</div>
+  <div class="title-row">
+    <div><h1>Mining Intelligence</h1><p>One decision surface connecting mineral prospectivity, production risk and operational action.</p></div>
+    <div class="data-badge"><i></i> MOIL ANALYTICS</div>
+  </div>
+
+  <div class="hero-command">
+    <div class="hero-copy">
+      <div class="hero-top"><span class="eyebrow">DECISION SIGNAL · 14:32 IST</span><span class="status high">ATTENTION</span></div>
+      <h2>Production may finish <em>18% below plan.</em></h2>
+      <p>The current plan is under pressure from equipment downtime and weather. Review the actions that can help protect production.</p>
+      <div class="hero-actions"><button class="primary" data-page-link="decisions">See actions <b>→</b></button><button class="ghost" data-page-link="exploration">View exploration</button></div>
+      <div class="pipeline"><span>SPACE + GEOLOGY</span><b>→</b><span>AI MODEL</span><b>→</b><span>RISK</span><b>→</b><span>ACTION</span><b>→</b><span>EXPLANATION</span></div>
+    </div>
+    <div class="hero-snapshot">
+      <div class="snapshot-head"><span>MINE</span><b id="heroMine">Tirodi</b><small id="heroState">Madhya Pradesh</small></div>
+      <div class="score-ring"><div><strong id="heroScore">10</strong><span id="heroScoreSuffix">locations</span><small id="heroScoreLabel">mine network</small></div></div>
+      <div class="snapshot-grid"><div><span>CONFIDENCE</span><b>91%</b></div><div><span>ZONE</span><b>A</b></div><div><span>PRIORITY</span><b class="gold">HIGH</b></div><div><span>DATA STATUS</span><b class="green">READY</b></div></div>
+    </div>
+  </div>
+
+  <div class="kpi-grid stagger">
+    <article class="kpi"><div class="kpi-icon green">⌁</div><span>MODELED PROSPECTIVITY</span><strong id="kPros">87%</strong><small>Highest priority signal</small><div class="kpi-trend up">↑ 12% vs baseline</div></article>
+    <article class="kpi"><div class="kpi-icon blue">▥</div><span>FORECAST PRODUCTION</span><strong>8,200 <em>t</em></strong><small>Target 10,000 t</small><div class="kpi-trend down">↓ 15% vs target</div></article>
+    <article class="kpi critical"><div class="kpi-icon orange">!</div><span>EXPECTED SHORTFALL</span><strong>1,800 <em>t</em></strong><small>18% below target</small><div class="kpi-trend down">HIGH exposure</div></article>
+    <article class="kpi"><div class="kpi-icon gold">⚙</div><span>EQUIPMENT DOWNTIME</span><strong>14 <em>%</em></strong><small>1 asset at high risk</small><div class="kpi-trend down">↑ 5% risk</div></article>
+    <article class="kpi"><div class="kpi-icon rain">≈</div><span>WEATHER IMPACT</span><strong>Moderate</strong><small>72% rain probability</small><div class="kpi-trend amber">+11% mining risk</div></article>
+  </div>
+
+  <div class="dashboard-grid top-grid">
+    <article class="panel map-panel command-map">
+      <div class="panel-head"><div><span class="eyebrow">SPATIAL INTELLIGENCE</span><h3>MOIL mine network & prospectivity</h3></div><button class="text-btn" data-page-link="exploration">Open full map →</button></div>
+      <div class="map-wrap"><div id="miniMap" class="map"></div><div class="map-badge">MODELED PROBABILITY</div><div class="mini-legend"><span><i class="l-low"></i>0–64%</span><span><i class="l-med"></i>65–79%</span><span><i class="l-high"></i>80–100%</span></div></div>
+    </article>
+    <article class="panel chart-panel overview-intelligence-panel">
+      <div class="panel-head"><div><span class="eyebrow" id="overviewChartEyebrow">NETWORK PRODUCTION</span><h3 id="overviewChartTitle">Annual production across 10 mine locations</h3></div><span class="period" id="overviewChartPeriod">ALL LOCATIONS</span></div>
+      <div id="overviewAnnualWrap" class="overview-chart-wrap"><canvas id="overviewAnnualChart"></canvas></div>
+      <div id="overviewMineWrap" class="overview-mine-detail" hidden>
+        <div class="mine-detail-head"><div><span class="eyebrow">SELECTED MINE</span><h3 id="overviewMineName">Tirodi</h3><p id="overviewMineState">Madhya Pradesh</p></div><span class="badge high" id="overviewMinePriority">HIGH</span></div>
+        <div class="mine-detail-grid">
+          <div><span>MANGANESE ORE QUALITY</span><strong id="overviewGrade">31.4%</strong><small>modelled grade signal</small></div>
+          <div><span>OPERATING DEPTH</span><strong id="overviewDepth">410 m</strong><small>current analytical context</small></div>
+        </div>
+        <div class="annual-donut-wrap"><canvas id="overviewMineAnnualChart"></canvas><div class="annual-donut-center"><strong id="overviewMineAnnualValue">41,058</strong><span>t / year</span></div></div>
+        <button class="text-btn" data-page-link="exploration">Open mine intelligence →</button>
+      </div>
+      <div class="chart-foot" id="overviewAnnualFoot"><span><i class="legend-dot annual-green"></i>Annual production</span><b>Click a mine on the map to view details</b></div>
+    </article>
+  </div>
+
+  <div class="dashboard-grid mid-grid">
+    <article class="panel">
+      <div class="panel-head"><div><span class="eyebrow">MODULE 1 · MODEL EVIDENCE</span><h3>What drives prospectivity?</h3></div><button class="text-btn" data-page-link="models">Model details →</button></div>
+      <div class="feature-bars">
+        <div class="feature-row"><div class="feature-label"><span>Geological formation</span><b>34%</b></div><i><em style="width:34%"></em></i></div>
+        <div class="feature-row"><div class="feature-label"><span>SWIR spectral features</span><b>27%</b></div><i><em style="width:27%"></em></i></div>
+        <div class="feature-row"><div class="feature-label"><span>Elevation</span><b>19%</b></div><i><em style="width:19%"></em></i></div>
+        <div class="feature-row"><div class="feature-label"><span>Spectral indices</span><b>12%</b></div><i><em style="width:12%"></em></i></div>
+        <div class="feature-row"><div class="feature-label"><span>Slope</span><b>8%</b></div><i><em style="width:8%"></em></i></div>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div><span class="eyebrow">MODULE 3 · DECISION ENGINE</span><h3>Priority actions</h3></div><button class="text-btn" data-page-link="decisions">View all →</button></div>
+      <div class="action-list">
+        <div><b>01</b><div><strong>Protect productive hours</strong><p>Adjust schedule around rainfall.</p></div><span class="priority high">HIGH</span></div>
+        <div><b>02</b><div><strong>Prioritize maintenance</strong><p>Reduce EX-04 downtime exposure.</p></div><span class="priority high">HIGH</span></div>
+        <div><b>03</b><div><strong>Investigate Zone A</strong><p>87% modeled prospectivity · 91% confidence.</p></div><span class="priority med">MED</span></div>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div><span class="eyebrow">WEATHER → OPERATIONS</span><h3>24h exposure</h3></div><span class="status medium">MODERATE</span></div>
+      <div class="weather-card"><div><strong>72%</strong><span>rain probability</span></div><div class="weather-mini"><b>18 mm</b><small>expected rain</small></div><div class="weather-mini"><b>81%</b><small>humidity</small></div><div class="weather-mini"><b>+11%</b><small>mining risk</small></div></div>
+      <div class="sparkline-holder"><canvas id="weatherSpark"></canvas></div>
+    </article>
+  </div>
+
+  <div class="table-panel">
+    <div class="panel-head"><div><span class="eyebrow">NETWORK VIEW</span><h3>Mine overview</h3></div><button class="text-btn" data-page-link="exploration">See exploration →</button></div>
+    <div class="table-scroll"><table><thead><tr><th>RANK</th><th>MINE / LEASE</th><th>STATE</th><th>PROSPECTIVITY</th><th>CONFIDENCE</th><th>PRIORITY</th><th>OPERATIONAL SIGNAL</th></tr></thead><tbody id="mineTable"></tbody></table></div>
+  </div>
+</section>
+
+<!-- EXPLORATION -->
+<section class="page" id="page-exploration">
+  <div class="page-kicker">02 / SPATIAL INTELLIGENCE</div>
+  <div class="title-row"><div><h1>Explore priority areas</h1><p>See which mine areas have the strongest modelled exploration signals and why they need attention.</p></div><div class="data-badge">MODELLED RESULT · NOT A RESERVE ESTIMATE</div></div>
+  <div class="explore-toolbar">
+    <div class="segmented"><button class="active" data-mapmode="heat">Probability Heatmap</button><button data-mapmode="network">Mine Network</button></div>
+    <label>State <select id="stateFilter"><option>All states</option><option>Maharashtra</option><option>Madhya Pradesh</option></select></label>
+    <span class="map-style-note">Satellite context · geology-ready</span>
+    <span class="map-status"><i></i> SPATIAL VIEW READY</span>
+  </div>
+  <div class="explore-layout">
+    <article class="panel large-map">
+      <div class="map-header"><div><span class="eyebrow">MODEL OUTPUT · 0–100%</span><h3>Modeled manganese prospectivity field</h3></div><div class="map-tools"><button id="fitMap">Fit network</button><button id="locateMine">Center active mine</button></div></div>
+      <div class="map-wrap full"><div id="mainMap" class="map"></div>
+        <div class="map-layer-control">
+          <b>MAP LAYERS</b>
+          <label><input type="checkbox" id="prosLayer" checked> Prospectivity heatmap</label>
+          <label><input type="checkbox" id="contourLayer" checked> Probability contours</label>
+          <label><input type="checkbox" id="mineLayer" checked> Mine / lease locations</label>
+          <label><input type="checkbox" id="occLayer"> Known occurrence points</label>
+        </div>
+        <div class="probability-legend"><b>MODELED PROSPECTIVITY</b><div class="gradient"></div><div class="legend-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div><small>Higher probability = stronger exploration priority signal</small></div>
+        <div class="map-crosshair" id="mapCrosshair">LAT — · LON —</div>
+      </div>
+    </article>
+    <aside class="explore-side">
+      <div class="panel selected-zone">
+        <div class="selected-top"><span class="eyebrow">SELECTED LOCATION</span><span class="status high">HIGH</span></div>
+        <h2 id="zoneMine">Tirodi</h2><p id="zoneState">Madhya Pradesh · Project-scope location</p>
+        <div class="big-score"><strong id="zoneScore">87%</strong><span>modeled prospectivity</span></div>
+        <div class="confidence-row"><span>Model confidence</span><b id="zoneConfidence">—</b></div>
+        <div class="confidence-track"><i style="width:91%"></i></div>
+        <div class="zone-grid" id="zoneGridDynamic"><div><span>PRIORITY ZONE</span><b>A</b></div><div><span>GEOLOGY SIGNAL</span><b>34%</b></div><div><span>SPECTRAL SIGNAL</span><b>27%</b></div><div><span>TERRAIN SIGNAL</span><b>19%</b></div></div>
+        <button class="primary full" id="whyZone">Why this area? ↗</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><span class="eyebrow">PROBABILITY BANDS</span><h3>Priority overview</h3></div></div>
+        <canvas id="bandChart"></canvas>
+      </div>
+    </aside>
+  </div>
+  <div class="explore-bottom">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">RANKED OUTPUT</span><h3>Prospectivity by mine / lease</h3></div><span class="period">10 LOCATIONS</span></div><canvas id="prospectivityRankChart"></canvas></article>
+    <article class="table-panel"><div class="panel-head"><div><span class="eyebrow">EXPLORATION REGISTER</span><h3>Exploration priorities</h3></div></div><div class="table-scroll"><table><thead><tr><th>RANK</th><th>LOCATION</th><th>PROBABILITY</th><th>CONFIDENCE</th><th>ZONE</th><th>ACCESS SIGNAL</th><th>NEXT STEP</th></tr></thead><tbody id="exploreTable"></tbody></table></div></article>
+  </div>
+  <div class="scientific-note"><b>Scientific boundary</b><span>The system combines satellite-derived, geological and terrain features to estimate exploration priority. It does not directly certify an underground manganese reserve. Continuous grade or assay data can support geostatistical methods such as Kriging when available.</span></div>
+</section>
+
+<!-- PRODUCTION -->
+<section class="page" id="page-production">
+  <div class="page-kicker">03 / PRODUCTION INTELLIGENCE</div>
+  <div class="title-row"><div><h1>Production at a glance</h1><p>See the monthly plan, expected production and the main reasons for any gap.</p></div><div class="data-badge">MOIL ANALYTICS</div></div>
+  <div class="production-strip">
+    <div><span>TARGET</span><strong>10,000 t</strong><small>monthly plan</small></div><div class="arrow">→</div>
+    <div><span>PREDICTED</span><strong>8,200 t</strong><small>model output</small></div><div class="arrow">→</div>
+    <div class="critical"><span>EXPECTED SHORTFALL</span><strong>1,800 t</strong><small>18% below target</small></div>
+    <div class="forecast-confidence"><span>FORECAST CONFIDENCE</span><strong>84%</strong><i><em style="width:84%"></em></i></div>
+  </div>
+  <div class="production-grid">
+    <article class="panel chart-panel wide"><div class="panel-head"><div><span class="eyebrow">FORECAST SERIES</span><h3>Plan vs actual vs forecast</h3></div><div class="chart-tabs"><button class="active">Monthly</button><button>Weekly</button></div></div><canvas id="productionChart"></canvas></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">SHORTFALL</span><h3>Target attainment</h3></div></div><div class="donut-chart-wrap" role="img" aria-label="Target attainment 82 percent"><div class="donut-visual"><div class="donut-center"><b>82%</b><span>attainment</span></div></div></div><div class="donut-stats"><div><span>Target</span><b>10,000 t</b></div><div><span>Forecast</span><b>8,200 t</b></div><div><span>Gap</span><b class="red">1,800 t</b></div></div></article>
+  </div>
+  <div class="production-grid lower">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">DRIVER ANALYSIS</span><h3>What is driving the gap?</h3></div></div><canvas id="driverChart"></canvas></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">WEATHER → OPERATIONS</span><h3>Weather today</h3></div><span class="status medium">MODERATE</span></div><div class="weather-detail"><div class="weather-primary"><strong>72%</strong><span>rain probability<br>next 24h</span></div><div class="weather-metrics"><div><b>18 mm</b><small>rainfall</small></div><div><b>29°C</b><small>temperature</small></div><div><b>81%</b><small>humidity</small></div><div><b>+11%</b><small>mining risk</small></div></div></div><canvas id="weatherChart"></canvas></article>
+  </div>
+  <div class="table-panel"><div class="panel-head"><div><span class="eyebrow">OPERATING LEDGER</span><h3>Production history</h3></div><span class="period">LAST 6 PERIODS</span></div><div class="table-scroll"><table><thead><tr><th>PERIOD</th><th>TARGET (t)</th><th>ACTUAL (t)</th><th>FORECAST (t)</th><th>UTILIZATION</th><th>DOWNTIME</th><th>WEATHER RISK</th><th>STATUS</th></tr></thead><tbody id="productionTable"></tbody></table></div></div>
+</section>
+
+<!-- EQUIPMENT -->
+<section class="page" id="page-equipment">
+  <div class="page-kicker">04 / ASSET RELIABILITY</div>
+  <div class="title-row"><div><h1>Equipment to watch</h1><p>See which equipment may affect production and where maintenance is needed.</p></div><div class="data-badge">MOIL ANALYTICS</div></div>
+  <div class="asset-summary">
+    <div><span>ASSETS MONITORED</span><strong>04</strong><small>Tracked in current</small></div><div><span>HIGH RISK</span><strong class="red">01</strong><small>Immediate attention</small></div><div><span>MEDIUM RISK</span><strong class="gold">01</strong><small>Watch closely</small></div><div><span>LOW RISK</span><strong class="green">02</strong><small>Within tolerance</small></div>
+  </div>
+  <div class="equipment-grid">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">RISK MATRIX</span><h3>Equipment health</h3></div></div><canvas id="equipmentScatter"></canvas></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">RELIABILITY PROFILE</span><h3>Downtime by asset</h3></div></div><canvas id="equipmentChart"></canvas></article>
+  </div>
+  <div class="table-panel"><div class="panel-head"><div><span class="eyebrow">ASSET REGISTER</span><h3>Maintenance priority queue</h3></div><button class="text-btn" data-page-link="decisions">Decision rules →</button></div><div class="table-scroll"><table><thead><tr><th>ASSET</th><th>TYPE</th><th>UTILIZATION</th><th>DOWNTIME</th><th>BREAKDOWNS</th><th>RISK</th><th>MAINTENANCE</th><th>ACTION</th></tr></thead><tbody id="equipmentTable"></tbody></table></div></div>
+  <div class="asset-detail-panel" id="assetDetail"></div>
+</section>
+
+<!-- DECISION CENTER -->
+<section class="page" id="page-decisions">
+  <div class="page-kicker">05 / DECISION INTELLIGENCE</div>
+  <div class="title-row"><div><h1>Decisions</h1><p>Traceable rules turn model outputs into operational actions without hiding the reasoning.</p></div><div class="engine-status"><i></i> RULE ENGINE ACTIVE</div></div>
+  <div class="decision-pipeline"><div><b>01</b><span>Signals</span></div><i>→</i><div><b>02</b><span>ML outputs</span></div><i>→</i><div><b>03</b><span>Risk</span></div><i>→</i><div class="active"><b>04</b><span>Rule engine</span></div><i>→</i><div><b>05</b><span>Action</span></div><i>→</i><div><b>06</b><span>Explanation</span></div></div>
+  <div class="decision-grid">
+    <article class="decision-card high-card"><header><span>01 · HIGH PRIORITY</span><b>MAINTENANCE</b></header><div class="decision-icon">⚙</div><h2>Prioritize critical equipment maintenance</h2><p>EX-04 is modeled at 14% downtime with high risk, reducing productive hours available to the production plan.</p><div class="trigger"><span>TRIGGER</span><b>Downtime 14% · Risk HIGH</b></div><button class="ghost full" data-page-link="equipment">Open asset context ↗</button></article>
+    <article class="decision-card"><header><span>02 · MEDIUM PRIORITY</span><b>WEATHER</b></header><div class="decision-icon">≈</div><h2>Adjust mining schedule</h2><p>Rain probability is 72%, with modeled weather exposure increasing mining risk by 11%.</p><div class="trigger"><span>TRIGGER</span><b>Rain probability 72%</b></div><button class="ghost full" data-page-link="production">Review weather context ↗</button></article>
+    <article class="decision-card"><header><span>03 · MEDIUM PRIORITY</span><b>ALLOCATION</b></header><div class="decision-icon">↔</div><h2>Optimize equipment allocation</h2><p>Utilization variance suggests capacity can be redistributed before the next operating window.</p><div class="trigger"><span>TRIGGER</span><b>Utilization variance</b></div><button class="ghost full" data-page-link="equipment">Review assets ↗</button></article>
+    <article class="decision-card high-card"><header><span>04 · HIGH PRIORITY</span><b>EXPLORATION</b></header><div class="decision-icon">⌁</div><h2>Prioritize Zone A investigation</h2><p>Zone A has the highest modeled prospectivity signal in the selected context, with 91% model confidence.</p><div class="trigger"><span>TRIGGER</span><b>Prospectivity 87% · Confidence 91%</b></div><button class="primary full" data-page-link="exploration">Open spatial intelligence ↗</button></article>
+  </div>
+  <div class="rule-audit">
+    <div class="panel-head"><div><span class="eyebrow">RULE AUDIT</span><h3>Why each action fired</h3></div><span class="period">DETERMINISTIC</span></div>
+    <div class="audit-row"><span>R-01</span><b>IF downtime ≥ 12%</b><strong>MAINTENANCE</strong><em>Fired</em></div>
+    <div class="audit-row"><span>R-02</span><b>IF rain probability ≥ 65%</b><strong>SCHEDULE ADJUSTMENT</strong><em>Fired</em></div>
+    <div class="audit-row"><span>R-03</span><b>IF shortfall ≥ 15%</b><strong>ACCESSIBLE ZONE REVIEW</strong><em>Fired</em></div>
+    <div class="audit-row"><span>R-04</span><b>IF utilization variance ≥ threshold</b><strong>REALLOCATE EQUIPMENT</strong><em>Fired</em></div>
+  </div>
+  <div class="scientific-note"><b>LLM boundary</b><span>The AI assistant explains structured model outputs and rule-engine decisions. It is not the core predictor and does not replace the deterministic decision logic.</span></div>
+</section>
+
+<!-- COPILOT -->
+<section class="page" id="page-copilot">
+  <div class="page-kicker">06 / GROUNDED AI EXPLANATION</div>
+  <div class="title-row"><div><h1>Copilot</h1><p>Ask questions about exploration, production and recommendations using the current structured decision context.</p></div><div class="ai-badge">✦ GROUNDED EXPLANATION</div></div>
+  <div class="copilot-layout">
+    <article class="copilot-main panel">
+      <div class="copilot-head"><div class="ai-orb">✦</div><div><span class="eyebrow">MAGANAI ASSISTANT</span><h2>Decision-aware mining copilot</h2><p>Model outputs → rule engine → explanation</p></div></div>
+      <div class="chat" id="chat"></div>
+      <div class="quick-prompts"><button data-q="Why is Zone A highly prospective?">Why is Zone A highly prospective?</button><button data-q="What is causing the production shortfall?">What is causing the shortfall?</button><button data-q="Which equipment needs attention?">Which equipment needs attention?</button><button data-q="What should we do next?">What should we do next?</button></div>
+      <div class="chat-input"><input id="chatInput" placeholder="Ask about exploration, production or recommendations…"><button id="chatSend">→</button></div>
+      <small class="chat-note">Answers are grounded in the current analytical context. Live responses can be connected to the `/ai/explain` service.</small>
+    </article>
+    <aside class="copilot-side">
+      <div class="panel"><span class="eyebrow">CURRENT CONTEXT</span><h3>Structured inputs</h3><div class="context-list"><div><span>Mine</span><b>Tirodi</b></div><div><span>Prospectivity</span><b>87%</b></div><div><span>Confidence</span><b>91%</b></div><div><span>Forecast</span><b>8,200 t</b></div><div><span>Shortfall</span><b class="red">18%</b></div><div><span>Rain probability</span><b>72%</b></div><div><span>Equipment risk</span><b class="red">HIGH</b></div></div></div>
+      <div class="panel boundary"><span class="eyebrow">AI BOUNDARY</span><p><b>Predictor:</b> XGBoost / geospatial model</p><p><b>Decision:</b> Python rule engine</p><p><b>Explainer:</b> Groq LLM</p></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ANALYTICS -->
+<section class="page" id="page-analytics">
+  <div class="page-kicker">07 / HISTORICAL ANALYTICS</div>
+  <div class="title-row"><div><h1>History</h1><p>Review operating patterns and model signals over time to support planning and retrospective analysis.</p></div><div class="data-badge">MOIL ANALYTICS</div></div>
+  <div class="analytics-kpis"><div><span>6M AVG PRODUCTION</span><b>8,983 t</b><em>−7.2% target</em></div><div><span>AVG UTILIZATION</span><b>78.8%</b><em>stable</em></div><div><span>AVG DOWNTIME</span><b>8.3%</b><em>↑ 1.6 pts</em></div><div><span>WEATHER EXPOSURE</span><b>Moderate</b><em>seasonal</em></div></div>
+  <div class="analytics-grid"><article class="panel wide"><div class="panel-head"><div><span class="eyebrow">PRODUCTION HISTORY</span><h3>Six-period operating trend</h3></div></div><canvas id="historyProduction"></canvas></article><article class="panel"><div class="panel-head"><div><span class="eyebrow">PROSPECTIVITY</span><h3>Signal trend</h3></div></div><canvas id="historyProspectivity"></canvas></article></div>
+  <div class="analytics-grid"><article class="panel"><div class="panel-head"><div><span class="eyebrow">UTILIZATION</span><h3>Equipment utilization trend</h3></div></div><canvas id="utilizationChart"></canvas></article><article class="panel wide"><div class="panel-head"><div><span class="eyebrow">WEATHER EXPOSURE</span><h3>Rainfall vs production</h3></div></div><canvas id="rainProductionChart"></canvas></article></div>
+  <div class="table-panel"><div class="panel-head"><div><span class="eyebrow">PERIOD REVIEW</span><h3>Historical operating table</h3></div></div><div class="table-scroll"><table><thead><tr><th>PERIOD</th><th>PRODUCTION</th><th>UTILIZATION</th><th>DOWNTIME</th><th>RAINFALL</th><th>PROSPECTIVITY</th><th>SHORTFALL</th><th>RISK</th></tr></thead><tbody id="historyTable"></tbody></table></div></div>
+</section>
+
+<!-- MODELS -->
+<section class="page" id="page-models">
+  <div class="page-kicker">08 / MODEL EVIDENCE</div>
+  <div class="title-row"><div><h1>How it works</h1><p>Make the intelligence auditable: feature influence, confidence, evaluation metrics and scientific boundaries.</p></div><div class="data-badge">MODEL EVIDENCE</div></div>
+  <div class="model-overview"><div><span>MODULE 1</span><b>XGBoost</b><small>Prospectivity classification</small></div><div><span>MODULE 2</span><b>LightGBM</b><small>Production forecast</small></div><div><span>MODULE 3</span><b>Rule Engine</b><small>Deterministic actions</small></div><div><span>EXPLAINER</span><b>Groq LLM</b><small>Structured explanation only</small></div></div>
+  <div class="model-grid"><article class="panel"><div class="panel-head"><div><span class="eyebrow">FEATURE IMPORTANCE</span><h3>Prospectivity model</h3></div></div><canvas id="modelFeatureChart"></canvas></article><article class="panel"><div class="panel-head"><div><span class="eyebrow">CLASSIFICATION QUALITY</span><h3>Model evaluation</h3></div></div><canvas id="modelMetricChart"></canvas></article></div>
+  <div class="model-grid"><article class="panel"><div class="panel-head"><div><span class="eyebrow">MODEL CONFIDENCE</span><h3>Selected-zone evidence</h3></div></div><div class="evidence-grid"><div><b>91%</b><span>confidence</span></div><div><b>87%</b><span>prospectivity</span></div><div><b>34%</b><span>geology contribution</span></div><div><b>27%</b><span>SWIR contribution</span></div></div><div class="evidence-list"><div><span>Spatial validation</span><b>Preferred</b></div><div><span>Leakage control</span><b>Required</b></div><div><span>Ground truth</span><b>Occurrence data</b></div><div><span>Kriging input</span><b>Continuous grade / assay</b></div></div></article><article class="panel methodology"><div class="panel-head"><div><span class="eyebrow">PIPELINE</span><h3>Evidence chain</h3></div></div><ol><li><b>01</b><span>Satellite + geological + terrain features</span></li><li><b>02</b><span>XGBoost learns occurrence relationships</span></li><li><b>03</b><span>Spatial prediction generates prospectivity field</span></li><li><b>04</b><span>Kriging can complement continuous grade data</span></li><li><b>05</b><span>Decision engine converts risk into action</span></li><li><b>06</b><span>LLM explains structured results</span></li></ol></article></div>
+  <div class="scientific-note"><b>Presentation rule</b><span>Do not call a prospectivity score a proven reserve. The current should clearly distinguish modeled exploration priority from verified mineral resources/reserves and label simulated values as simulated.</span></div>
+</section>
+
+<div id="toast" class="toast"></div>
+</div>
+</main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
