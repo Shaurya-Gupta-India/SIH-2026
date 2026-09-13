@@ -481,3 +481,70 @@ a,button,input,select{touch-action:manipulation}.panel-head{min-width:0}.panel-h
 .overview-mine-detail .mine-detail-grid > div > strong{
   color:#1E2229 !important;
 }
+
+
+/* ===== FINAL PRODUCT UX PASS ===== */
+:root{
+  --industrial:#1E2229;
+  --steel:#3E4651;
+  --stone:#8C939E;
+  --signal:#FF7A00;
+  --gold:#F4B41A;
+  --cream:#F5F7FA;
+}
+.review-banner{
+  display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:16px;
+  margin:18px 0 16px;padding:16px 18px;border:1px solid #46515e;border-radius:16px;
+  background:linear-gradient(120deg,#252b33 0%,#1f252c 100%);box-shadow:0 14px 36px rgba(0,0,0,.16);
+}
+.review-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#edf4ef;color:#16824e;font-weight:800}
+.review-copy span{display:block;font:9px "DM Mono";letter-spacing:.14em;color:#AEB7C1;margin-bottom:3px}
+.review-copy strong{display:block;color:#F5F7FA;font:700 16px "Space Grotesk"}
+.review-copy p{margin:4px 0 0;color:#C1C8D0;font-size:11px;line-height:1.45}
+.review-cta{border:1px solid #66717e;background:transparent;color:#F5F7FA;border-radius:11px;padding:11px 14px;font:600 11px "Inter";white-space:nowrap;cursor:pointer}
+.review-cta:hover{border-color:#FF7A00;color:#FFB06B;transform:translateY(-1px)}
+.quick-analysis-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 20px}
+.quick-analysis{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:10px;text-align:left;padding:15px 16px;border:1px solid #414b57;border-radius:15px;background:#242a32;color:#F5F7FA;cursor:pointer}
+.quick-analysis:hover{border-color:#FF7A00;box-shadow:0 12px 30px rgba(0,0,0,.16);transform:translateY(-2px)}
+.quick-no{font:9px "DM Mono";color:#AEB7C1}
+.quick-analysis b{display:block;font:700 13px "Space Grotesk"}
+.quick-analysis small{display:block;margin-top:3px;color:#AEB7C1;font-size:10px}
+.quick-analysis em{font-style:normal;color:#FF7A00;font-size:17px}
+/* Selected-mine detail: never use pale-on-light text. */
+.overview-mine-detail .mine-detail-grid>div{background:#F8FAF8!important;border:1px solid #CBD5CF!important;border-radius:14px;padding:16px!important}
+.overview-mine-detail .mine-detail-grid>div>span{color:#65706B!important;font:9px "DM Mono"!important;letter-spacing:.1em!important;display:block}
+.overview-mine-detail .mine-detail-grid>div>strong{color:#17221E!important;font:700 28px "Space Grotesk"!important;display:block;margin-top:7px}
+.overview-mine-detail .mine-detail-grid>div>small{color:#75817B!important;display:block;margin-top:4px}
+.overview-mine-detail .annual-donut-center strong{color:#F5F7FA!important}
+.overview-mine-detail .annual-donut-center span{color:#B7C0C8!important}
+/* Keep shortfall critical value visible and aligned */
+.kpi.critical strong,.production-strip .critical strong{color:#FF766B!important}
+/* Action / weather / evidence alignment */
+.action-list>div{align-items:start!important;grid-template-columns:32px minmax(0,1fr) auto!important}
+.action-list>div>div{min-width:0}
+.action-list div strong,.action-list div p{display:block!important}
+.action-list div strong{margin-bottom:5px!important}
+.action-list div p{line-height:1.5!important;margin:0!important;color:#C1C8D0!important}
+.weather-card{align-items:stretch!important}
+.weather-card>div:first-child,.weather-mini{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important}
+.weather-card>div:first-child span,.weather-mini small{color:#B3BBC3!important;line-height:1.3!important}
+.weather-card>div:first-child strong,.weather-mini b{line-height:1.0!important}
+/* Real heatmap canvas should sit above tiles and below controls. */
+.moil-heat-canvas{z-index:300!important;mix-blend-mode:multiply;opacity:.96}
+/* Target attainment is a true circular data viz, not a stretched chart canvas. */
+.donut-chart-wrap{width:min(100%,360px)!important;aspect-ratio:1/1!important;height:auto!important;min-height:0!important;position:relative!important;margin:0 auto 12px!important}
+.donut-visual{width:100%!important;height:100%!important;aspect-ratio:1/1!important;border-radius:50%!important}
+.donut-center{position:absolute!important;inset:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;transform:none!important}
+.donut-center b{font:800 clamp(32px,5vw,58px) "Space Grotesk"!important;color:var(--cream)!important;line-height:1!important}
+.donut-center span{margin-top:8px!important;color:#AEB7C1!important}
+/* Table typography */
+.table-panel td,.table-panel th{vertical-align:middle!important}
+.table-panel td{line-height:1.3!important}
+/* Decision Centre schedule block */
+.mining-schedule{margin-top:14px;padding:20px;border:1px solid #3F4A57;border-radius:16px;background:#20262D}
+.mining-schedule .schedule-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr .8fr;gap:10px;margin-top:14px}
+.mining-schedule .schedule-cell{padding:13px;border:1px solid #3F4A57;border-radius:12px;background:#2A3139}
+.mining-schedule .schedule-cell span{display:block;color:#98A2AC;font:8px "DM Mono";letter-spacing:.1em}
+.mining-schedule .schedule-cell b{display:block;margin-top:5px;color:#F5F7FA;font:700 13px "Space Grotesk"}
+@media(max-width:980px){.quick-analysis-grid{grid-template-columns:1fr 1fr}.review-banner{grid-template-columns:42px minmax(0,1fr)}.review-cta{grid-column:2;justify-self:start}.mining-schedule .schedule-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.quick-analysis-grid{grid-template-columns:1fr}.review-banner{grid-template-columns:40px 1fr}.review-cta{grid-column:1/-1}.overview-mine-detail .mine-detail-grid{grid-template-columns:1fr!important}.donut-chart-wrap{width:min(100%,300px)!important}.mining-schedule .schedule-grid{grid-template-columns:1fr}}

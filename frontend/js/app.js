@@ -3,18 +3,10 @@ const COLORS={
   forest:'#2F8F67',forest2:'#49B47F',teal:'#3BA6AC',orange:'#FF7A00',amber:'#F4B41A',
   red:'#FF6B5F',blue:'#69B4E5',paleGreen:'#24392E',paleOrange:'#3B2A1E',paleAmber:'#3B3320',paleTeal:'#23383A'
 };
-const mines=[
-{name:'Chikla',state:'Maharashtra',lat:21.54333,lon:79.75389,score:82,confidence:88,access:'Good',zone:'A',signal:'Stable',annual:40200,grade:29.8,depth:420},
-{name:'Dongri Buzurg',state:'Maharashtra',lat:21.54866,lon:79.68289,score:79,confidence:86,access:'Good',zone:'B',signal:'Watch',annual:39100,grade:28.9,depth:360},
-{name:'Beldongri',state:'Maharashtra',lat:21.34028,lon:79.29222,score:76,confidence:84,access:'Moderate',zone:'B',signal:'Stable',annual:32700,grade:27.4,depth:310},
-{name:'Kandri',state:'Maharashtra',lat:21.41169,lon:79.26632,score:80,confidence:87,access:'Good',zone:'A',signal:'Watch',annual:35600,grade:29.2,depth:385},
-{name:'Munsar',state:'Maharashtra',lat:21.40151,lon:79.28103,score:84,confidence:88,access:'Good',zone:'A',signal:'Stable',annual:41800,grade:31.1,depth:395},
-{name:'Gumgaon',state:'Maharashtra',lat:21.402,lon:78.983,score:74,confidence:82,access:'Moderate',zone:'C',signal:'Stable',annual:30100,grade:26.8,depth:275},
-{name:'Balaghat',state:'Madhya Pradesh',lat:21.84995,lon:80.22672,score:85,confidence:89,access:'Good',zone:'A',signal:'High attention',annual:44900,grade:30.6,depth:455},
-{name:'Ukwa',state:'Madhya Pradesh',lat:21.97425,lon:80.46661,score:78,confidence:85,access:'Moderate',zone:'B',signal:'Stable',annual:33800,grade:27.9,depth:290},
-{name:'Tirodi',state:'Madhya Pradesh',lat:21.68351,lon:79.72464,score:87,confidence:91,access:'Good',zone:'A',signal:'High attention',annual:41058,grade:31.4,depth:410},
-{name:'Sitapatore',state:'Madhya Pradesh',lat:21.66667,lon:79.66667,score:75,confidence:83,access:'Moderate',zone:'C',signal:'Stable',annual:29400,grade:26.5,depth:255}
-];
+let mines = [];
+const SUPABASE_URL = "https://kdqmbiocinbzxctdycit.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkcW1iaW9jaW5ienhjdGR5Y2l0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxMTkzMDAsImV4cCI6MjEwNDY5NTMwMH0.OqPOC3CzLf_bXdHHM5DKC3lIokJCHzfSfD0fwe3Dllc";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const assets=[
 {name:'EX-04',type:'Excavator',util:72,down:14,breakdowns:3,risk:'HIGH',maintenance:'Due now'},
 {name:'DT-03',type:'Dumper',util:78,down:8,breakdowns:1,risk:'MEDIUM',maintenance:'Due in 7d'},
@@ -101,14 +93,47 @@ function renderExploreTable(){
 function mapBase(el){return L.map(el,{zoomControl:true,preferCanvas:true,scrollWheelZoom:true}).setView([22.0,79.6],7)}
 function addBaseTile(map){return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map)}
 function heatPoints(){
- const pts=[];const offsets=[[-.09,0,.48],[.06,.03,.62],[-.04,.07,.72],[.02,-.065,.82],[.075,-.05,.58],[-.075,.055,.66],[0,0,1]];
- mines.forEach(m=>offsets.forEach(([a,b,w])=>pts.push([m.lat+a,m.lon+b,Math.min(1,(m.score/100)*w)])));
- return pts.concat([[21.60,79.70,.68],[21.73,79.78,.73],[21.82,80.08,.71],[21.89,80.25,.76],[21.48,79.45,.64],[21.38,79.18,.59],[21.52,79.95,.66],[21.76,79.98,.70]]);
+ const pts=[];
+ const spread=[[-.12,0,.42],[.08,.04,.55],[-.05,.085,.66],[.025,-.075,.8],[.085,-.055,.52],[-.08,.06,.60],[0,0,1]];
+ mines.forEach(m=>spread.forEach(([dLat,dLon,falloff])=>pts.push([m.lat+dLat,m.lon+dLon,Math.max(0,Math.min(1,(m.score/100)*falloff))])));
+ return pts;
 }
-function addHeat(map){
- if(typeof L.heatLayer==='function')return L.heatLayer(heatPoints(),{radius:44,blur:30,maxZoom:12,max:1,gradient:{0.15:'#1f6178',0.35:'#257b7f',0.58:'#3a8a62',0.78:'#c28f24',1:'#d2672e'}}).addTo(map);
- const group=L.layerGroup(); heatPoints().forEach(([lat,lon,w])=>{L.circle([lat,lon],{radius:5200,stroke:false,fillColor:colorForScore(w*100),fillOpacity:.09+w*.20,interactive:false}).addTo(group);L.circle([lat,lon],{radius:2500,stroke:false,fillColor:colorForScore(w*100),fillOpacity:.06+w*.14,interactive:false}).addTo(group)});return group.addTo(map);
+function HeatmapLayer(points, opts={}){
+ const layer=L.Layer.extend({
+  onAdd(map){
+   this._map=map; this._canvas=L.DomUtil.create('canvas','moil-heat-canvas');
+   const size=map.getSize(); this._canvas.width=Math.max(1,Math.round(size.x*.55)); this._canvas.height=Math.max(1,Math.round(size.y*.55));
+   this._canvas.style.position='absolute'; this._canvas.style.width=size.x+'px'; this._canvas.style.height=size.y+'px'; this._canvas.style.pointerEvents='none';
+   map.getPanes().overlayPane.appendChild(this._canvas); map.on('moveend zoomend resize',this._reset,this); this._reset();
+  },
+  onRemove(map){map.off('moveend zoomend resize',this._reset,this); if(this._canvas?.remove)this._canvas.remove();},
+  _reset(){
+   if(!this._map||!this._canvas)return;
+   const map=this._map, size=map.getSize(), scale=.55;
+   this._canvas.width=Math.max(1,Math.round(size.x*scale)); this._canvas.height=Math.max(1,Math.round(size.y*scale));
+   this._canvas.style.width=size.x+'px'; this._canvas.style.height=size.y+'px';
+   const ctx=this._canvas.getContext('2d'); if(!ctx)return; ctx.clearRect(0,0,this._canvas.width,this._canvas.height);
+   const cx=this._canvas.width/2, cy=this._canvas.height/2;
+   const bounds=map.getBounds(); const zoom=map.getZoom();
+   const radius=Math.max(26,Math.min(92,42+(zoom-6)*7))*scale;
+   for(const [lat,lon,intensity] of points){
+     if(!bounds.pad(.75).contains([lat,lon])) continue;
+     const p=map.latLngToContainerPoint([lat,lon]);
+     const x=p.x*scale, y=p.y*scale;
+     const g=ctx.createRadialGradient(x,y,0,x,y,radius);
+     const hue=intensity>=.82?'orange':intensity>=.65?'amber':'teal';
+     const color=hue==='orange'?[255,122,0]:hue==='amber'?[244,180,26]:[52,149,143];
+     const a=Math.min(.78,.22+intensity*.55);
+     g.addColorStop(0,`rgba(${color[0]},${color[1]},${color[2]},${a})`);
+     g.addColorStop(.42,`rgba(${color[0]},${color[1]},${color[2]},${a*.42})`);
+     g.addColorStop(1,'rgba(0,0,0,0)');
+     ctx.fillStyle=g; ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+   }
+  }
+ });
+ return new layer();
 }
+function addHeat(map){ return HeatmapLayer(heatPoints()).addTo(map); }
 function addContours(map){
  const g=L.layerGroup();[...mines].filter(m=>m.score>=80).forEach(m=>[{r:15000,o:.04,c:COLORS.forest2},{r:10000,o:.06,c:COLORS.amber},{r:6500,o:.08,c:COLORS.orange}].forEach(b=>L.circle([m.lat,m.lon],{radius:b.r,fill:false,color:b.c,weight:1,dashArray:'5 7',opacity:.7,interactive:false}).addTo(g)));return g.addTo(map);
 }
@@ -187,4 +212,14 @@ function go(page){$$('.page').forEach(p=>p.classList.remove('active'));$('#page-
 function searchAll(q){q=q.toLowerCase().trim();if(!q)return;const m=mines.find(x=>x.name.toLowerCase().includes(q));if(m){setSelectedMine(m.name);go('exploration');toast(`Focused on ${m.name}`);return}const pages=[['production','production'],['equipment','equipment'],['decision','decisions'],['model','models'],['history','analytics'],['analytics','analytics'],['copilot','copilot'],['ai','copilot'],['exploration','exploration']];const match=pages.find(x=>q.includes(x[0]));if(match){go(match[1]);toast(`Opened ${match[1]}`)}}
 function bindUtilityUI(){$('#globalSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')searchAll(e.target.value)});$('#mobileMenu')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));$('#whyZone')?.addEventListener('click',()=>{if(selectedMine)go('copilot');else toast('Select a mine first')});$$('.chart-tabs button').forEach(b=>b.addEventListener('click',()=>{const group=b.parentElement;group.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');toast(`${b.textContent} view selected`)}));}
 function start(){initMineSelect();renderGlobalContext();renderOverviewContext();renderExploreContext();setupNav();bindUtilityUI();renderMineTable();renderExploreTable();renderProductionTable();renderHistoryTable();renderEquipment();initCopilot();initMaps();initCharts();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+supabaseClient.from('predictions').select('*').then(({data, error}) => {
+  if (error) { console.error(error); return; }
+  mines = data.map(r => ({
+    name: r.mine_name, lat: 21.5, lon: 79.5,
+    score: r.prospectivity_confidence_pct||0, confidence: r.prospectivity_confidence_pct||0,
+    access:"Good", zone:"A", signal: r.risk_level,
+    annual: r.predicted_production_tonnes||0, grade: r.predicted_grade_pct||0,
+    depth: r.operating_depth_m||0, type: r.mine_type, capacity:0, host:"—", state:"Maharashtra"
+  }));
+  start();
+});

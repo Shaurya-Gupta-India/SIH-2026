@@ -11,6 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:,">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -26,13 +28,13 @@
     <button class="nav" data-page="exploration"><span class="nav-no">02</span><span class="nav-icon">⌁</span><span>Exploration</span></button>
     <button class="nav" data-page="production"><span class="nav-no">03</span><span class="nav-icon">▥</span><span>Production</span></button>
     <button class="nav" data-page="equipment"><span class="nav-no">04</span><span class="nav-icon">⚙</span><span>Equipment</span></button>
-    <button class="nav" data-page="decisions"><span class="nav-no">05</span><span class="nav-icon">◆</span><span>Decisions</span></button>
+    <button class="nav" data-page="decisions"><span class="nav-no">05</span><span class="nav-icon">◆</span><span>Decision Centre</span></button>
     <button class="nav" data-page="copilot"><span class="nav-no">06</span><span class="nav-icon">✦</span><span>Copilot</span></button>
   </nav>
   <div class="side-label system-label">ANALYTICS</div>
   <nav>
     <button class="nav" data-page="analytics"><span class="nav-no">07</span><span class="nav-icon">⌗</span><span>History</span></button>
-    <button class="nav" data-page="models"><span class="nav-no">08</span><span class="nav-icon">◈</span><span>How it works</span></button>
+    <button class="nav" data-page="models"><span class="nav-no">08</span><span class="nav-icon">◈</span><span>Model Insights</span></button>
   </nav>
   <div class="side-bottom">
     <div class="system-card"><i></i><div><b>MOIL INTELLIGENCE</b><small>Connected analytics workspace</small></div></div>
@@ -63,6 +65,12 @@
   <div class="title-row">
     <div><h1>Mining Intelligence</h1><p>One decision surface connecting mineral prospectivity, production risk and operational action.</p></div>
     <div class="data-badge"><i></i> MOIL ANALYTICS</div>
+  </div>
+
+  <div class="review-banner">
+    <div class="review-icon">✓</div>
+    <div class="review-copy"><span>DAILY REVIEW</span><strong>Production needs attention</strong><p>Shortfall, weather exposure and equipment downtime are the main signals to review today.</p></div>
+    <button class="review-cta" data-page-link="decisions">Open Decision Centre <b>→</b></button>
   </div>
 
   <div class="hero-command">
@@ -99,14 +107,21 @@
       <div id="overviewMineWrap" class="overview-mine-detail" hidden>
         <div class="mine-detail-head"><div><span class="eyebrow">SELECTED MINE</span><h3 id="overviewMineName">Tirodi</h3><p id="overviewMineState">Madhya Pradesh</p></div><span class="badge high" id="overviewMinePriority">HIGH</span></div>
         <div class="mine-detail-grid">
-          <div><span>MANGANESE ORE QUALITY</span><strong id="overviewGrade">31.4%</strong><small>modelled grade signal</small></div>
-          <div><span>OPERATING DEPTH</span><strong id="overviewDepth">410 m</strong><small>current analytical context</small></div>
+          <div><span>MANGANESE ORE QUALITY</span><strong id="overviewGrade">31.4%</strong><small>grade signal</small></div>
+          <div><span>OPERATING DEPTH</span><strong id="overviewDepth">410 m</strong><small>depth context</small></div>
         </div>
         <div class="annual-donut-wrap"><canvas id="overviewMineAnnualChart"></canvas><div class="annual-donut-center"><strong id="overviewMineAnnualValue">41,058</strong><span>t / year</span></div></div>
         <button class="text-btn" data-page-link="exploration">Open mine intelligence →</button>
       </div>
       <div class="chart-foot" id="overviewAnnualFoot"><span><i class="legend-dot annual-green"></i>Annual production</span><b>Click a mine on the map to view details</b></div>
     </article>
+  </div>
+
+  <div class="quick-analysis-grid">
+    <button class="quick-analysis" data-page-link="production"><span class="quick-no">01</span><span><b>Production shortfall</b><small>Target vs expected output</small></span><em>→</em></button>
+    <button class="quick-analysis" data-page-link="exploration"><span class="quick-no">02</span><span><b>Resource potential</b><small>Exploration priority heatmap</small></span><em>→</em></button>
+    <button class="quick-analysis" data-page-link="production"><span class="quick-no">03</span><span><b>Actual vs target</b><small>Production performance</small></span><em>→</em></button>
+    <button class="quick-analysis" data-page-link="analytics"><span class="quick-no">04</span><span><b>Historical analysis</b><small>Trends over time</small></span><em>→</em></button>
   </div>
 
   <div class="dashboard-grid mid-grid">
@@ -236,6 +251,16 @@
     <article class="decision-card"><header><span>03 · MEDIUM PRIORITY</span><b>ALLOCATION</b></header><div class="decision-icon">↔</div><h2>Optimize equipment allocation</h2><p>Utilization variance suggests capacity can be redistributed before the next operating window.</p><div class="trigger"><span>TRIGGER</span><b>Utilization variance</b></div><button class="ghost full" data-page-link="equipment">Review assets ↗</button></article>
     <article class="decision-card high-card"><header><span>04 · HIGH PRIORITY</span><b>EXPLORATION</b></header><div class="decision-icon">⌁</div><h2>Prioritize Zone A investigation</h2><p>Zone A has the highest modeled prospectivity signal in the selected context, with 91% model confidence.</p><div class="trigger"><span>TRIGGER</span><b>Prospectivity 87% · Confidence 91%</b></div><button class="primary full" data-page-link="exploration">Open spatial intelligence ↗</button></article>
   </div>
+  <section class="mining-schedule" aria-labelledby="scheduleTitle">
+    <div class="panel-head"><div><span class="eyebrow">MINING SCHEDULE</span><h3 id="scheduleTitle">Protect the next operating window</h3></div><span class="status medium">ADJUSTED</span></div>
+    <p class="schedule-copy">Prioritize reliable equipment, work around the highest rainfall window and preserve productive hours.</p>
+    <div class="schedule-grid">
+      <div class="schedule-cell"><span>OPERATING WINDOW</span><b>06:00–18:00</b></div>
+      <div class="schedule-cell"><span>RAIN WATCH</span><b>12:00–16:00</b></div>
+      <div class="schedule-cell"><span>ASSET FOCUS</span><b>EX-04</b></div>
+      <div class="schedule-cell"><span>ZONE REVIEW</span><b>Zone A</b></div>
+    </div>
+  </section>
   <div class="rule-audit">
     <div class="panel-head"><div><span class="eyebrow">RULE AUDIT</span><h3>Why each action fired</h3></div><span class="period">DETERMINISTIC</span></div>
     <div class="audit-row"><span>R-01</span><b>IF downtime ≥ 12%</b><strong>MAINTENANCE</strong><em>Fired</em></div>
